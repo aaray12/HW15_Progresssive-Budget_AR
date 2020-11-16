@@ -1,3 +1,6 @@
+const STATIC_CACHE = "static-cache-v1";
+const RUNTIME_CACHE = "runtime-cache";
+
 const FILES_TO_CACHE = [
     "/",
     "/index.html",
@@ -8,8 +11,7 @@ const FILES_TO_CACHE = [
 
   ];
 
-  const STATIC_CACHE = "static-cache-v1";
-const RUNTIME_CACHE = "runtime-cache";
+ 
 
 self.addEventListener("install", event => {
   event.waitUntil(
@@ -45,13 +47,13 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
   // non GET requests are not cached and requests to other origins are not cached
-      // if (
-      //   event.request.method !== "GET" ||
-      //   !event.request.url.startsWith(self.location.origin)
-      // ) {
-      //   event.respondWith(fetch(event.request));
-      //   return;
-      // }
+      if (
+        event.request.method !== "GET" ||
+        !event.request.url.startsWith(self.location.origin)
+      ) {
+        event.respondWith(fetch(event.request));
+        return;
+      }
 
   // handle runtime GET requests for data from /api routes
   if (event.request.url.includes("/api/")) {
