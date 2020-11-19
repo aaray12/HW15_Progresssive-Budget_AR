@@ -1,11 +1,13 @@
+const indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+
 let db;
 // create a new db request for a "budget" database.
-const request = window.indexedDB.open("budget", 1);
+const request = indexedDB.open("budget", 1);
 
 request.onupgradeneeded = function (event) {
   db = event.target.result;
   // create object store called "pending" and set autoIncrement to true
-  const pending = db.createObjectStore("pending", {
+  db.createObjectStore("pending", {
     autoIncrement:true 
   });
 };
@@ -20,7 +22,7 @@ request.onsuccess = function (event) {
 
 request.onerror = function (event) {
   // log error here
-  console.log(event);
+  console.log(event.target.errorCode);
 };
 
 function saveRecord(record) {
